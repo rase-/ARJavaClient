@@ -1,5 +1,6 @@
 package com.example.cam;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -10,10 +11,12 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
@@ -27,13 +30,11 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Integer> {
 		HttpClient httpclient = new DefaultHttpClient();
 	    httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 
-	    HttpPost httppost = new HttpPost("http://localhost:3000/upload");
+	    HttpPost httppost = new HttpPost("http://jamo.fi:3000/process");
 
-	    ByteArrayEntity mpEntity = new ByteArrayEntity(params[0]);
-	    // ContentBody cbFile = new FileBody(new File("filepath"), "image/jpeg");
-	    // ContentBody cbFile = new ByteArrayBody(params[0],"image/jpeg");
-	    // mpEntity.addPart("userfile", cbFile);
-
+	    MultipartEntity mpEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+	    ContentBody cd = new InputStreamBody(new ByteArrayInputStream(params[0]), "img.jpg");
+	    mpEntity.addPart("file", cd);
 
 	    httppost.setEntity(mpEntity);
 	    System.out.println("executing request " + httppost.getRequestLine());
