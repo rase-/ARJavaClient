@@ -3,7 +3,9 @@ package com.example.cam;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -23,10 +25,10 @@ import org.apache.http.util.EntityUtils;
 
 import android.os.AsyncTask;
 
-public class SendImageTask extends AsyncTask<byte[], Integer, Integer> {
+public class SendImageTask extends AsyncTask<byte[], Integer, String> {
 
 	@Override
-	protected Integer doInBackground(byte[]... params) {
+	protected String doInBackground(byte[]... params) {
 		HttpClient httpclient = new DefaultHttpClient();
 	    httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 
@@ -38,6 +40,7 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Integer> {
 
 	    httppost.setEntity(mpEntity);
 	    System.out.println("executing request " + httppost.getRequestLine());
+	    String responseContent = null;
 	    HttpResponse response;
 		try {
 			response = httpclient.execute(httppost);
@@ -48,7 +51,10 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Integer> {
 		      System.out.println(EntityUtils.toString(resEntity));
 		    }
 		    if (resEntity != null) {
-		      resEntity.consumeContent();
+		    	InputStream is = resEntity.getContent();
+		    	responseContent = IOUtils.toString(is);
+		    	System.out.println("Response content: " + responseContent);
+		    	resEntity.consumeContent();
 		    }
 
 		    httpclient.getConnectionManager().shutdown();
@@ -57,8 +63,7 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Integer> {
 			e.printStackTrace();
 		}
 	    
-		return null;
+		return responseContent;
 	}
 
-	
 }
