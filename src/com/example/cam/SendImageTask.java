@@ -28,9 +28,16 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 
 public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
+	private Context context;
+
+	public SendImageTask(Context context) {
+		this.context = context;
+	}
 
 	@Override
 	protected Product doInBackground(byte[]... params) {
@@ -64,24 +71,13 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
 				System.out.println("Response content: " + responseContent);
 				resEntity.consumeContent();
 			}
-			
+
 			httpclient.getConnectionManager().shutdown();
 		} catch (Exception e) {
 			Gson mapper = new Gson();
-			File f = new File("android_asset/product.json");
-			FileInputStream fis;
-			try {
-				fis = new FileInputStream(f);
-				byte[] data = new byte[(int) f.length()];
-				fis.read(data);
-				fis.close();
-				String jsonString = new String(data);
-				System.out.println("JSON contents: " + jsonString);
-				p = mapper.fromJson(jsonString, Product.class);
-			} catch (Exception e2) {
-				// e.printStackTrace();
-				e2.printStackTrace();
-			}
+			String jsonString = "{\"name\": \"product\",\"description\": \"This product is not very expensive, and fairly good quality\",\"thumbsUp\": 10,\"thumbsDown\": 3}";
+			System.out.println("JSON contents: " + jsonString);
+			p = mapper.fromJson(jsonString, Product.class);
 		}
 
 		return p;

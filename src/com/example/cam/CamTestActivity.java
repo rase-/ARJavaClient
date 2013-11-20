@@ -28,6 +28,7 @@ import android.widget.FrameLayout;
 
 public class CamTestActivity extends Activity {
 	private static final String TAG = "CamTestActivity";
+	private Context context = this;
 	Preview preview;
 	Button buttonClick;
 	Camera camera;
@@ -130,7 +131,7 @@ public class CamTestActivity extends Activity {
 //			} finally {
 //			}
 			
-			new SendImageTask().execute(data);
+			new SendImageTask(context).execute(data);
 			Log.d(TAG, "onPictureTaken - jpeg");
 		}
 	};
