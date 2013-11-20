@@ -36,6 +36,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.view.SurfaceView;
+import android.widget.FrameLayout;
 
 public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
 	private CamTestActivity activity;
@@ -92,6 +93,9 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
 		System.out.println(p);
 		// Here we actually want to put some overlay that is removable with some action
 		activity.getDrawView().setText(p.toString());
+		// The following codeline complains about already having a parent... how to update on the fly??
+		((FrameLayout) activity.findViewById(R.id.preview)).removeView(activity.getDrawView());
+		((FrameLayout) activity.findViewById(R.id.preview)).addView(activity.getDrawView());
 	}
 	
 }
