@@ -28,15 +28,20 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.view.SurfaceView;
 
 public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
-	private Context context;
+	private CamTestActivity activity;
 
-	public SendImageTask(Context context) {
-		this.context = context;
+	public SendImageTask(CamTestActivity context) {
+		this.activity = context;
 	}
 
 	@Override
@@ -86,6 +91,7 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
 	protected void onPostExecute(Product p) {
 		System.out.println(p);
 		// Here we actually want to put some overlay that is removable with some action
+		activity.getDrawView().setText(p.toString());
 	}
 	
 }

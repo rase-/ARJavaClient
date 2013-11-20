@@ -1,15 +1,12 @@
 package com.example.cam;
 
-/**
- * @author Jose Davis Nidhin
- */
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PictureCallback;
@@ -28,13 +25,14 @@ import android.widget.FrameLayout;
 
 public class CamTestActivity extends Activity {
 	private static final String TAG = "CamTestActivity";
-	private Context context = this;
 	Preview preview;
 	Button buttonClick;
 	Camera camera;
 	String fileName;
-	Activity act;
+	CamTestActivity act;
 	Context ctx;
+	
+	DrawView drawView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,30 +46,33 @@ public class CamTestActivity extends Activity {
 		
 		preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
 		preview.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		((FrameLayout) findViewById(R.id.preview)).addView(preview);
-		preview.setKeepScreenOn(true);
-		
-		buttonClick = (Button) findViewById(R.id.buttonClick);
-		
-		buttonClick.setOnClickListener(new OnClickListener() {
+		preview.setOnClickListener(new View.OnClickListener() {
+
+			@Override
 			public void onClick(View v) {
-				//				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);
 				camera.takePicture(shutterCallback, rawCallback, jpegCallback);
 			}
+			
 		});
-		
-		buttonClick.setOnLongClickListener(new OnLongClickListener(){
+		preview.setOnLongClickListener(new View.OnLongClickListener() {
+
 			@Override
-			public boolean onLongClick(View arg0) {
-				camera.autoFocus(new AutoFocusCallback(){
+			public boolean onLongClick(View v) {
+				camera.autoFocus(new AutoFocusCallback() {
+
 					@Override
-					public void onAutoFocus(boolean arg0, Camera arg1) {
-						//camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+					public void onAutoFocus(boolean success, Camera camera) {
+						camera.takePicture(shutterCallback, rawCallback, jpegCallback);
 					}
+					
 				});
 				return true;
 			}
 		});
+		((FrameLayout) findViewById(R.id.preview)).addView(preview);
+		drawView = new DrawView(this);
+		((FrameLayout) findViewById(R.id.preview)).addView(drawView);
+		preview.setKeepScreenOn(true);
 	}
 
 	@Override
@@ -99,6 +100,10 @@ public class CamTestActivity extends Activity {
 		preview.setCamera(camera);
 	}
 
+	public DrawView getDrawView() {
+		return drawView;
+	}
+	
 	ShutterCallback shutterCallback = new ShutterCallback() {
 		public void onShutter() {
 			// Log.d(TAG, "onShutter'd");
@@ -131,7 +136,7 @@ public class CamTestActivity extends Activity {
 //			} finally {
 //			}
 			
-			new SendImageTask(context).execute(data);
+			new SendImageTask(act).execute(data);
 			Log.d(TAG, "onPictureTaken - jpeg");
 		}
 	};
