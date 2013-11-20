@@ -39,9 +39,9 @@ import android.view.SurfaceView;
 import android.widget.FrameLayout;
 
 public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
-	private CamTestActivity activity;
+	private AssistantActivity activity;
 
-	public SendImageTask(CamTestActivity context) {
+	public SendImageTask(AssistantActivity context) {
 		this.activity = context;
 	}
 
@@ -75,6 +75,8 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
 				InputStream is = resEntity.getContent();
 				String responseContent = IOUtils.toString(is);
 				System.out.println("Response content: " + responseContent);
+				Gson mapper = new Gson();
+				if (responseContent != null) p = mapper.fromJson(responseContent, Product.class);
 				resEntity.consumeContent();
 			}
 

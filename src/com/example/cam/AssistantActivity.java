@@ -13,6 +13,9 @@ import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,14 +25,15 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
-public class CamTestActivity extends Activity {
+public class AssistantActivity extends Activity {
 	private static final String TAG = "CamTestActivity";
 	Preview preview;
 	Button buttonClick;
 	Camera camera;
 	String fileName;
-	CamTestActivity act;
+	AssistantActivity act;
 	Context ctx;
 	
 	DrawView drawView;
@@ -75,6 +79,15 @@ public class CamTestActivity extends Activity {
 		preview.setKeepScreenOn(true);
 	}
 
+	// Initiating Menu XML file (menu.xml)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.layout.menu, menu);
+        return true;
+    }
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -140,4 +153,25 @@ public class CamTestActivity extends Activity {
 			Log.d(TAG, "onPictureTaken - jpeg");
 		}
 	};
+	
+	/**
+     * Event Handling for Individual menu item selected
+     * Identify single menu item by it's id
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+         
+        switch (item.getItemId())
+        {
+        case R.id.add_product:
+            // Single menu item is selected do something
+            // Ex: launching new activity/screen or show alert message
+            Toast.makeText(this, "Menu selected", Toast.LENGTH_SHORT).show();
+            return true;
+ 
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }    
 }
