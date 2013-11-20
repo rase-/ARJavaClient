@@ -14,6 +14,10 @@ public class Product {
 		this.thumbsDown = thumbsDown;
 	}
 	
+	public Product() {
+		
+	}
+	
 	public String getName() {
 		return name;
 	}

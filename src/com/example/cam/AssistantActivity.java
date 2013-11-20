@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -165,8 +166,9 @@ public class AssistantActivity extends Activity {
         switch (item.getItemId())
         {
         case R.id.add_product:
-            // Replace this with launching new activity
-            Toast.makeText(this, "Menu selected", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, AddActivity.class);
+            startActivityForResult(intent, 0);
+            //Toast.makeText(this, "Menu selected", Toast.LENGTH_SHORT).show();
             return true;
  
         default:
