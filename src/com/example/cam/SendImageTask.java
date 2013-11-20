@@ -76,11 +76,16 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
 		} catch (Exception e) {
 			Gson mapper = new Gson();
 			String jsonString = "{\"name\": \"product\",\"description\": \"This product is not very expensive, and fairly good quality\",\"thumbsUp\": 10,\"thumbsDown\": 3}";
-			System.out.println("JSON contents: " + jsonString);
 			p = mapper.fromJson(jsonString, Product.class);
 		}
 
 		return p;
 	}
 
+	@Override
+	protected void onPostExecute(Product p) {
+		System.out.println(p);
+		// Here we actually want to put some overlay that is removable with some action
+	}
+	
 }

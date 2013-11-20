@@ -38,4 +38,8 @@ public class Product {
 	public void setThumbsDown(int thumbsDown) {
 		this.thumbsDown = thumbsDown;
 	}
+	
+	public String toString() {
+		return name + "\n" + description + "\n" + thumbsUp + "\n" + thumbsDown;
+	}
 }
