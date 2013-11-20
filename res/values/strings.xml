@@ -11,5 +11,6 @@
     <string name="set_barcode">Set barcode</string>
     <string name="set_logo">Set logo</string>
     <string name="add_text">Add text</string>
+    <string name="send">Send</string>
 
 </resources>

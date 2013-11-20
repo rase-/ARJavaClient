@@ -165,8 +165,7 @@ public class AssistantActivity extends Activity {
         switch (item.getItemId())
         {
         case R.id.add_product:
-            // Single menu item is selected do something
-            // Ex: launching new activity/screen or show alert message
+            // Replace this with launching new activity
             Toast.makeText(this, "Menu selected", Toast.LENGTH_SHORT).show();
             return true;
  
