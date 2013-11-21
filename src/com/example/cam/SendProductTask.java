@@ -22,11 +22,12 @@ import org.apache.http.params.HttpConnectionParams;
 import com.google.gson.Gson;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
-public class SendProductTask extends AsyncTask<RawProduct, Integer, Integer> {
+public class SendProductTask extends AsyncTask<RawProduct, Integer, Boolean> {
 
 	@Override
-	protected Integer doInBackground(RawProduct... params) {
+	protected Boolean doInBackground(RawProduct... params) {
 		HttpClient httpclient = new DefaultHttpClient();
 		httpclient.getParams().setParameter(
 				CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
@@ -72,6 +73,7 @@ public class SendProductTask extends AsyncTask<RawProduct, Integer, Integer> {
 				System.out.println("Response content: " + responseContent);
 				// Eventually we can put here some sign that tells whether it was successful or not
 				// Like a Toast call
+				if (responseContent.contains("ok")) return true;
 				resEntity.consumeContent();
 			}
 
@@ -81,7 +83,11 @@ public class SendProductTask extends AsyncTask<RawProduct, Integer, Integer> {
 			e.printStackTrace();
 		}
 
-		return null;
+		return false;
 	}
-
+	
+	@Override
+	protected void onPostExecute(Boolean success) {
+		if (success) System.out.println("SUCESSS");//Toast.makeText(context, text, duration)
+	}
 }
