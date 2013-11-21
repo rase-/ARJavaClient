@@ -53,7 +53,7 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
 		httpclient.getParams().setParameter(
 				HttpConnectionParams.CONNECTION_TIMEOUT, 5000);
 
-		HttpPost httppost = new HttpPost("http://jamo.fi:3000/process");
+		HttpPost httppost = new HttpPost("http://jamo.fi:3000/products/match");
 
 		MultipartEntity mpEntity = new MultipartEntity(
 				HttpMultipartMode.BROWSER_COMPATIBLE);
