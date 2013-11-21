@@ -16,9 +16,7 @@ public class AddActivity extends Activity {
 	private static final int BARCODE_CAMERA_REQUEST = 1888;
 	private static final int LOGO_CAMERA_REQUEST = 1889;
 	private static final int TEXT_CAMERA_REQUEST = 1890;
-	private byte[] barcodeImage;
-	private byte[] logoImage;
-	private ArrayList<byte[]> textImages;
+	private RawProduct rawProduct = new RawProduct();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +54,8 @@ public class AddActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// Send to server here ... eventually
+				SendProductTask sendTask = new SendProductTask();
+				sendTask.execute(rawProduct);
 				finish();
 			}
 		});
@@ -74,20 +73,19 @@ public class AddActivity extends Activity {
 	            Bitmap photo = (Bitmap) data.getExtras().get("data"); 
 	            ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	            photo.compress(CompressFormat.JPEG, 100, stream);
-	            barcodeImage = stream.toByteArray();
+	            rawProduct.setBarcodeImage(stream.toByteArray());
 	        }  
 	        if (requestCode == LOGO_CAMERA_REQUEST && resultCode == RESULT_OK) {
 	        	Bitmap photo = (Bitmap) data.getExtras().get("data"); 
 	            ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	            photo.compress(CompressFormat.JPEG, 100, stream);
-	            logoImage = stream.toByteArray();
+	            rawProduct.setLogoImage(stream.toByteArray());
 	        }
 	        if (requestCode == TEXT_CAMERA_REQUEST && resultCode == RESULT_OK) {
 	        	Bitmap photo = (Bitmap) data.getExtras().get("data"); 
 	            ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	            photo.compress(CompressFormat.JPEG, 100, stream);
-	            textImages.add(stream.toByteArray());
+	            rawProduct.addTextImage(stream.toByteArray());
 	        }
-	        System.out.println("GOT RESULT");
 	 }
 }
