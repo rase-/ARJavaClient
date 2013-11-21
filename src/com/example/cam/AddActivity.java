@@ -11,6 +11,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class AddActivity extends Activity {
 	private static final int BARCODE_CAMERA_REQUEST = 1888;
@@ -54,6 +55,10 @@ public class AddActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				EditText editName = (EditText)findViewById(R.id.editText1);
+				EditText editDescription = (EditText)findViewById(R.id.editText2);
+				rawProduct.setName(editName.getText().toString());
+				rawProduct.setDescription(editDescription.getText().toString());
 				SendProductTask sendTask = new SendProductTask();
 				sendTask.execute(rawProduct);
 				finish();

@@ -2,6 +2,7 @@ package com.example.cam;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -13,6 +14,7 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
@@ -46,7 +48,14 @@ public class SendProductTask extends AsyncTask<RawProduct, Integer, Integer> {
 			cd = new InputStreamBody(new ByteArrayInputStream(img), "text" + i + ".jpg");
 			mpEntity.addPart("text" + i, cd);
 		}
-
+		
+		try {
+			System.out.println("Adding JSON: " + params[0].toJSON());
+			mpEntity.addPart("product",	new StringBody(params[0].toJSON()));
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		
 		httppost.setEntity(mpEntity);
 		System.out.println("executing request " + httppost.getRequestLine());
 		Product p = null;
