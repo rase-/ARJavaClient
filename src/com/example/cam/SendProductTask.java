@@ -61,6 +61,8 @@ public class SendProductTask extends AsyncTask<RawProduct, Integer, Integer> {
 				InputStream is = resEntity.getContent();
 				String responseContent = IOUtils.toString(is);
 				System.out.println("Response content: " + responseContent);
+				// Eventually we can put here some sign that tells whether it was successful or not
+				// Like a Toast call
 				resEntity.consumeContent();
 			}
 
