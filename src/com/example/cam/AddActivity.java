@@ -86,6 +86,7 @@ public class AddActivity extends Activity {
 	            photo.compress(CompressFormat.JPEG, 100, stream);
 	            rawProduct.setLogoImage(stream.toByteArray());
 	        }
+	        // TODO: THIS BUGGER CAUSES A BUG
 	        if (requestCode == TEXT_CAMERA_REQUEST && resultCode == RESULT_OK) {
 	        	Bitmap photo = (Bitmap) data.getExtras().get("data"); 
 	            ByteArrayOutputStream stream = new ByteArrayOutputStream();
