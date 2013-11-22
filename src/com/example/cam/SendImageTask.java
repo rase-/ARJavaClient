@@ -85,6 +85,7 @@ public class SendImageTask extends AsyncTask<byte[], Integer, Product> {
 			Gson mapper = new Gson();
 			String jsonString = "{\"name\": \"product\",\"description\": \"This product is not very expensive, and fairly good quality\",\"thumbsUp\": 10,\"thumbsDown\": 3}";
 			p = mapper.fromJson(jsonString, Product.class);
+			e.printStackTrace();
 		}
 
 		return p;

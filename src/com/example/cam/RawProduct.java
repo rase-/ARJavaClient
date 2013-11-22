@@ -54,6 +54,6 @@ public class RawProduct {
 	}
 	
 	public String toJSON() {
-		return "{ name: " + name + ", description: " + description + "}";
+		return "{ \"name\": \"" + name + "\", \"description\": \"" + description + "\" }";
 	}
 }

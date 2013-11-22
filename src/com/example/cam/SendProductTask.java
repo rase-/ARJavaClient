@@ -35,21 +35,29 @@ public class SendProductTask extends AsyncTask<RawProduct, Integer, Boolean> {
 				HttpConnectionParams.CONNECTION_TIMEOUT, 5000);
 
 		HttpPost httppost = new HttpPost("http://jamo.fi:3000/products");
-
 		MultipartEntity mpEntity = new MultipartEntity(
 				HttpMultipartMode.BROWSER_COMPATIBLE);
 		
-		ContentBody cd = new InputStreamBody(
+		ContentBody cd;
+		if (params[0] != null && params[0].getBarcodeImage() != null) {
+			cd = new InputStreamBody(
 				new ByteArrayInputStream(params[0].getBarcodeImage()), "barcode.jpg");
-		mpEntity.addPart("barcode", cd);
-		cd = new InputStreamBody(new ByteArrayInputStream(params[0].getLogoImage()), "logo.jpg");
-		mpEntity.addPart("logo", cd);
-		for (int i = 0; i < params[0].getTextImages().size(); i++) {
-			byte[] img = params[0].getTextImages().get(i);
-			cd = new InputStreamBody(new ByteArrayInputStream(img), "text" + i + ".jpg");
-			mpEntity.addPart("text" + i, cd);
+			mpEntity.addPart("barcode", cd);
 		}
 		
+		if (params[0] != null && params[0].getLogoImage() != null) {
+			cd = new InputStreamBody(new ByteArrayInputStream(params[0].getLogoImage()), "logo.jpg");
+			mpEntity.addPart("logo", cd);
+		}
+		
+		if (params[0] != null && params[0].getTextImages() != null && params[0].getTextImages().size() > 0) {
+			for (int i = 0; i < params[0].getTextImages().size(); i++) {
+				byte[] img = params[0].getTextImages().get(i);
+				cd = new InputStreamBody(new ByteArrayInputStream(img), "text" + i + ".jpg");
+				mpEntity.addPart("text" + i, cd);
+			}
+		}
+		System.out.println("AFTER IMAGE ADDITION TO MULTIPART");
 		try {
 			System.out.println("Adding JSON: " + params[0].toJSON());
 			mpEntity.addPart("product",	new StringBody(params[0].toJSON()));
@@ -89,5 +97,6 @@ public class SendProductTask extends AsyncTask<RawProduct, Integer, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean success) {
 		if (success) System.out.println("SUCESSS");//Toast.makeText(context, text, duration)
+		else System.out.println("FAILURE");
 	}
 }
